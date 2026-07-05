@@ -1,0 +1,9 @@
+Flask
+Flask-Login
+Flask-SQLAlchemy
+pyotp
+bcrypt
+cryptography
+Pillow
+stegano
+qrcode
