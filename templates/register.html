@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Create account</h2>
+  <form method="post">
+    <input name="username" placeholder="Username" required>
+    <input name="email" placeholder="Email (optional)">
+    <input name="password" type="password" placeholder="Password" required>
+    <button type="submit">Register</button>
+  </form>
+  <p class="redirect-text">
+  Already have an account?
+  <a href="{{ url_for('login') }}" class="redirect-link">Login</a>
+</p>
+
+
+  {% if qr_b64 %}
+    <h3>Scan this QR with Google Authenticator</h3>
+    <img src="data:image/png;base64,{{ qr_b64 }}" alt="TOTP QR">
+    <p>If your authenticator won't scan the QR, add this secret manually: <code>{{ totp_secret }}</code></p>
+  {% endif %}
+
+  <p>After registering, use the 6-digit token from your authenticator during login.</p>
+</div>
+{% endblock %}

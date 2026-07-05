@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+    <h3>Contacts</h3>
+    <ul class="contacts">
+      {% for c in contacts %}
+        <li><a class="contact-link" href="{{ url_for('dashboard') }}" data-id="{{ c.id }}" data-username="{{ c.username }}">{{ c.username }}</a></li>
+      {% endfor %}
+    </ul>
+
+    <form method="post" action="{{ url_for('add_contact') }}">
+      <input name="username" placeholder="Add user by username" required>
+      <button type="submit">Add</button>
+    </form>
+
+    <form method="post" action="{{ url_for('toggle_privacy') }}">
+      <button type="submit">{{ 'Disable' if current_user.allow_contacts else 'Enable' }} contact requests</button>
+    </form>
+
+    <hr>
+    <form method="post" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
+      <label>Share file (select contact inside)</label>
+      <input type="file" name="file" required>
+      <select name="receiver_id" required>
+        {% for c in contacts %}<option value="{{ c.id }}">{{ c.username }}</option>{% endfor %}
+      </select>
+      <input name="hide_text" placeholder="Optional: hide text inside image">
+      <button type="submit">Upload & Share</button>
+    </form>
+    <hr style="margin: 15px 0; border: 1px solid #eee;">
+    <small style="color: #999;">All uploads are encrypted and stored securely 🔒</small>
+
+
+    <!-- <form method="post" action="{{ url_for('extract_stego') }}" enctype="multipart/form-data">
+      <label>Extract hidden message from image</label>
+      <input type="file" name="image" required>
+      <button type="submit">Extract</button>
+    </form> -->
+  </aside>
+
+  <section class="main">
+    <div id="chat-root">
+      <p class="hint">Click a contact to open the chat window (on left)</p>
+      <!-- Chat UI will be inserted by JS (chat.js) -->
+    </div>
+  </section>
+</div>
+
+<script>
+  window.currentUserId = {{ current_user.id }};
+</script>
+
+
+<script>
+  // attach click handlers to contact links
+  document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.contact-link').forEach(el=>{
+      el.addEventListener('click', function(e){
+        e.preventDefault();
+        const id = this.dataset.id;
+        const username = this.dataset.username;
+        startChat(id, username);
+      });
+    });
+  });
+</script>
+<!-- 🕵️ Hidden Message Modal -->
+<div id="hiddenMessageModal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <h3>🕵️ Hidden Message Found</h3>
+    <p id="hiddenMessageText"></p>
+    <button id="closeModalBtn">Close</button>
+  </div>
+</div>
+
+<style>
+  /* Modal overlay */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  /* Modal box */
+  .modal-box {
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.25s ease-out;
+  }
+
+  .modal-box h3 {
+    margin-top: 0;
+    color: #1e40af;
+  }
+
+  .modal-box p {
+    font-size: 15px;
+    color: #111;
+    margin: 10px 0 20px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .modal-box button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .modal-box button:hover {
+    background: #1d4ed8;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+<!-- 🖼️ Image Preview Modal -->
+<div id="imagePreviewModal" class="modal-overlay" style="display:none;">
+  <div class="modal-box image-modal">
+    <img id="previewImage" src="" alt="Image Preview">
+  </div>
+</div>
+
+<style>
+  .image-modal {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+
+  #previewImage {
+    max-width: 80vw;
+    max-height: 80vh;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+</style>
+
+
+
+{% endblock %}

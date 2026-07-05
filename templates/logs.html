@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="logs-title">📜 Intrusion Logs</h2>
+
+<div class="logs-container">
+  <table class="logs-table">
+    <thead>
+      <tr>
+        <th>🕒 Time</th>
+        <th>👤 User ID</th>
+        <th>🌐 IP Address</th>
+        <th>💻 User Agent</th>
+        <th>✅ Success</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for l in logs %}
+      <tr>
+        <td>{{ l.timestamp }}</td>
+        <td>{{ l.user_id }}</td>
+        <td>{{ l.ip_address }}</td>
+        <td class="ua">{{ l.user_agent }}</td>
+        <td class="{{ 'success' if l.success else 'fail' }}">
+          {{ '✔️' if l.success else '❌' }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
