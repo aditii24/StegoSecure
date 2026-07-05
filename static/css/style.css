@@ -1,0 +1,399 @@
+*{box-sizing:border-box}
+body{font-family:Inter, system-ui, Arial, sans-serif;background:#f3f6fa;margin:0;color:#0f172a}
+.topbar{display:flex;justify-content:space-between;padding:12px 20px;background:linear-gradient(90deg,#0f172a,#0b1220);color:#fff;align-items:center}
+.topbar .title{font-weight:700;font-size:1.1rem}
+.container{padding:18px}
+.card{background:#fff;padding:18px;border-radius:12px;max-width:600px;margin:20px auto;box-shadow:0 6px 20px rgba(10,20,40,0.06)}
+.layout{display:flex;gap:18px;align-items:flex-start}
+.sidebar{width:300px;background:#fff;padding:12px;border-radius:10px;box-shadow:0 6px 20px rgba(10,20,40,0.05)}
+.main{flex:1;background:#fff;padding:14px;border-radius:10px;box-shadow:0 6px 20px rgba(10,20,40,0.04)}
+input,textarea,select,button{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #e6eef8;background:#fff}
+button{background:#0b69f0;color:#fff;border:none;cursor:pointer}
+.contacts{list-style:none;padding:0;margin:0}
+.contacts li{padding:8px;border-radius:8px;margin:6px 0;background:#f8fbff}
+.contact-link{color:#0b69f0;text-decoration:none}
+.chat{display:flex;flex-direction:column;height:70vh}
+.chat-header{padding:8px;border-bottom:1px solid #eef4ff;font-weight:700}
+.messages{flex:1;overflow:auto;padding:8px}
+.message{padding:10px;margin:6px 0;border-radius:12px;max-width:70%}
+.message.me{background:linear-gradient(90deg,#0b69f0,#2563eb);color:#fff;margin-left:auto}
+.message.them{background:#f1f7ff;color:#071239}
+.flashes{margin-bottom:10px}
+.flash{padding:10px;border-radius:8px;margin-bottom:8px}
+.flash.success{background:#ecfdf5;color:#065f46}
+.flash.danger{background:#fff1f2;color:#7f1d1d}
+table{width:100%;border-collapse:collapse}
+table th,table td{padding:8px;border:1px solid #eef4ff}
+.hint{color:#6b7280}
+.message {
+  padding: 10px 14px;
+  margin: 6px 0;
+  border-radius: 16px;
+  max-width: 70%;
+  word-wrap: break-word;
+  position: relative;
+  display: inline-block;
+  clear: both;
+}
+
+.message.me {
+  background: linear-gradient(135deg, #0b69f0, #2563eb);
+  color: #fff;
+  float: right;
+  border-bottom-right-radius: 4px;
+}
+
+.message.them {
+  background: #f1f7ff;
+  color: #071239;
+  float: left;
+  border-bottom-left-radius: 4px;
+}
+
+.message .time {
+  display: none !important;
+}
+.self-destruct-info {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #374151;
+  background: #fef3c7;
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.disclaimer {
+  font-weight: 600;
+  color: #b45309;
+}
+
+.countdown {
+  color: #ef4444;
+  font-weight: 600;
+}
+.message.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+.chat-image {
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.chat-image:hover {
+  transform: scale(1.02);
+}
+
+/* Popup preview */
+.image-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.image-popup img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
+.message {
+  margin: 6px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  max-width: 75%;
+  word-wrap: break-word;
+  transition: all 0.2s ease-in-out;
+}
+
+.message.me {
+  background-color: #cce5ff;
+  align-self: flex-end;
+}
+
+.message.them {
+  background-color: #e2e8f0;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 60vh;
+  padding: 10px;
+  scroll-behavior: smooth;
+}
+.fade-out {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* === HEADER (Navbar) === */
+.navbar {
+  background: linear-gradient(90deg, #0f172a, #1e293b);
+  color: #f8fafc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 30px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  font-family: "Inter", sans-serif;
+}
+
+.nav-left .brand {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #60a5fa;
+  letter-spacing: 0.5px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #cbd5e1;
+  font-weight: 500;
+  font-size: 0.95rem;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Hover glow line */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #38bdf8;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #38bdf8;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Logout button highlight */
+.nav-link.logout {
+  color: #f87171;
+}
+
+.nav-link.logout:hover {
+  color: #fca5a5;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 8px;
+  }
+}
+/* === FOOTER === */
+.footer {
+  background: #0f172a;
+  color: #94a3b8;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 20px;
+}
+
+.footer p {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  letter-spacing: 0.3px;
+}
+
+/* === Flash Messages Styling (StegoSecure Style) === */
+.flash-message {
+  background: rgba(34, 197, 94, 0.15); /* soft green success tone */
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #16a34a;
+  padding: 12px 18px;
+  border-radius: 10px;
+  margin: 15px auto;
+  max-width: 95%;
+  text-align: center;
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.15);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Optional info and error variations (if you use them) */
+.flash-message.info {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+.flash-message.error {
+  background: rgba(248, 113, 113, 0.15);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #f87171;
+}
+
+/* Fade-out animation */
+.flash-message.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+/* === Logs Page Styling === */
+.logs-title {
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: var(--primary-color, #00b4d8);
+  text-shadow: 0 0 5px rgba(0,180,216,0.3);
+}
+
+.logs-container {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  overflow-x: auto;
+}
+
+.logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.logs-table th,
+.logs-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  text-align: left;
+}
+
+.logs-table th {
+  background: rgba(0,0,0,0.2);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--accent-color, #f0f0f0);
+  border-bottom: 2px solid #00b4d8;
+}
+
+.logs-table tr:hover {
+  background-color: rgba(0,180,216,0.15);
+  transition: background-color 0.2s ease;
+}
+
+.logs-table .ua {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #ccc;
+  font-size: 0.85em;
+}
+
+.logs-table .success {
+  color: #4ade80; /* green */
+  font-weight: bold;
+}
+
+.logs-table .fail {
+  color: #f87171; /* red */
+  font-weight: bold;
+}
+.navbar {
+  background: linear-gradient(to right, #0a1224, #111c33);
+  color: white;
+  padding: 14px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* Brand (used in both states) */
+.brand {
+  font-size: 1.4em;
+  color: #5ab0ff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Centered brand for login/register pages */
+.nav-center {
+  width: 100%;
+  text-align: center;
+}
+
+.brand.centered {
+  font-size: 1.6em;
+  letter-spacing: 0.5px;
+}
+
+/* Authenticated navbar links */
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-link {
+  color: #e2e8f0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #5ab0ff;
+}
+
+.nav-link.logout {
+  color: #f87171;
+}
+
+.nav-link.logout:hover {
+  color: #ef4444;
+}
+.redirect-text {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.95em;
+  color: #374151; /* subtle gray */
+}
+
+.redirect-link {
+  color: #2563eb; /* bright blue */
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.redirect-link:hover {
+  color: #1d4ed8;
+  border-bottom: 1px solid #1d4ed8;
+}
